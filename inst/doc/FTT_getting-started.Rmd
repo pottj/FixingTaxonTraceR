@@ -1,0 +1,187 @@
+---
+title: "Getting Started with the Fixing Taxon Traceability Tool"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with the Fixing Taxon Traceability Tool}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(FixingTaxonTraceR)
+library(foreach)
+
+```
+
+# Loading example data
+
+```{r example load, eval=T}
+# get path to example data set
+example_3.4_fn = system.file("extdata", 
+                  "Paper_example3_04_Decisive_FTT.txt", 
+                  package = "FixingTaxonTraceR")
+example_3.10_fn = system.file("extdata", 
+                  "Paper_example3_10_Decisive_notFTT.txt", 
+                  package = "FixingTaxonTraceR")
+
+# load input 
+example_3.4 = FTT_createInput(fn=example_3.4_fn,
+                              sepSym = "_",
+                              c = 4)
+example_3.10 = FTT_createInput(fn=example_3.10_fn,
+                               sepSym = "_",
+                               c = 4)
+
+example_3.11 = example_3.10
+dummy = example_3.11$data
+dummy[11:15,status := "unresolved"]
+example_3.11$data = dummy 
+
+# check input 
+knitr::kable(example_3.4$input_raw,
+             caption = "Input from text file. Does not need to be numeric, does not need to be quadruples")
+
+knitr::kable(example_3.4$input_ctuples,
+             caption = "Input c-tuples. If in input was a set with more than four taxa, all possible c-tuples in that set are added here")
+
+knitr::kable(example_3.4$input_ordered,caption = "Input c-tuples, all numeric from 1 to n (different taxa in input).")
+
+knitr::kable(example_3.4$taxa, caption = "Transfomation matrix")
+
+head(example_3.4$data)
+```
+
+The input data are lists containing five elements each:
+
+-   raw input: data as given in the txt file
+-   input c-tuples: input data transformed into c-tuples only (in case a bigger set was given as input)
+-   input ordered: data transformed to c-tuples, and taxa ID forced to numeric and ordered hierarchically
+-   data: all possible c-tuples given the taxon set with status information (c-tuple as input available, c-tuple not in input = unresolved). In addition, for each c-tuple all possible (c-1)-tuples are listed
+-   taxa: data table used for transformation, taxaID denotes the original input taxaID (as in input_raw & input_quadruples), NR is the ordered number of this taxon (as in input_ordered & data)
+
+# Perform initial test
+
+We described two bounds for the FTT algorithm in our publication:
+
+1)  Upper bound: $k > \binom{n}{c} - n + c - 1 \Rightarrow $ always FTT!
+2)  Lower bound: $k < \binom{n-1}{c-1} \Rightarrow $ never FTT!
+
+For $c=4$, we test three typical properties of phylogenetic decisiveness:
+
+1)  All possible triples have to be covered. If _abc_ is not covered, the four-way partition _a_ | _b_ | _c_ | $X_1$ is not covered, with $X_1 = X \setminus \{a,b,c\}$. The four-way partition property is not satisfied, and the set is not phylogenetic decisive.   
+2)  Triples can be covered once, but those need to be covered by different quadruples. If _abc_ and _abd_ are both covered by _abcd_ only, then the four-way partition _a_ | _b_ | _cd_ | $X_2$ is not covered, with $X_2 = X \setminus \{a,b,c,d\}$. The four-way partition property is not satisfied, and the set is not phylogenetic decisive.    
+3)  All possible tuples have to be covered at least $n-3$ times. If not, then there is at least one four-way partition of the form _a_ | _b_ | $X_3$ | $X_4$, with $X_3 = X \setminus \{a,b,X_4\}$, $X_4 = X \setminus \{a,b,X_3\}$, which is not covered (check master thesis, Theorem 6). The four-way partition property is not satisfied, and the set is not phylogenetic decisive.   
+
+```{r checkInput, eval=T}
+example_3.4_check = FTT_initialCheck(data = example_3.4$data,
+                                     c = 4,
+                                     n = 6,
+                                     verbose = T)
+
+example_3.10_check = FTT_initialCheck(data = example_3.10$data,
+                                      c = 4,
+                                      n = 6,
+                                      verbose = T)
+
+example_3.11_check = FTT_initialCheck(data = example_3.11$data,
+                                      c = 4,
+                                      n = 6,
+                                      verbose = T)
+
+```
+
+
+# Testing the sets for FTT
+
+## Green algorithm
+
+First, one can test FTT using the input c-tuples: 
+
+```{r example_green, eval=T}
+time1 = Sys.time()
+FTT_green_3.4 = FTT_algorithmGreen(data=example_3.4$data,
+                                   c=4,
+                                   n=6,
+                                   verbose=T)
+FTT_green_3.10 = FTT_algorithmGreen(data = example_3.10$data,
+                                    c=4,
+                                    n=6,
+                                    verbose=T)
+FTT_green_3.11 = FTT_algorithmGreen(data = example_3.11$data,
+                                    c=4,
+                                    n=6,
+                                    verbose=T)
+message("Time for FTT (green) : " ,
+        round(difftime(Sys.time(),time1,units = "sec"),3),
+        " seconds")
+
+```
+
+## Red algorithm
+
+Second, one can test FTT using the cross c-tuples: 
+
+```{r example_red, eval=T}
+time2 = Sys.time()
+FTT_red_3.4 = FTT_algorithmRed(data = example_3.4$data,
+                               verbose = T, 
+                               c=4, 
+                               n=6)
+FTT_red_3.10 = FTT_algorithmRed(data = example_3.10$data,
+                                verbose = T, 
+                                c=4, 
+                                n=6)
+FTT_red_3.11 = FTT_algorithmRed(data = example_3.11$data,
+                                verbose = T, 
+                                c=4, 
+                                n=6)
+message("Time for FTT (red) : " ,
+        round(difftime(Sys.time(),time2,units = "sec"),3),
+        " seconds")
+
+```
+
+## NRC algorithm
+
+Finally, as the example is based on quadruples with $c=4$, one can test for phylogentic decisiveness by checking the possible rainbow colorings. 
+
+```{r example_noRainbowColor, eval=T}
+time3 = Sys.time()
+NRC_3.4 = FTT_findNRC(data = example_3.4)
+NRC_3.10 = FTT_findNRC(data = example_3.10)
+NRC_3.11 = FTT_findNRC(data = example_3.11)
+message("Time for NRC (Parvini) : " ,
+        round(difftime(Sys.time(),time3,units = "sec"),3),
+        " seconds")
+```
+
+### Checking the output
+
+```{r, eval=T}
+knitr::kable(FTT_green_3.4[11:15,])
+knitr::kable(FTT_red_3.4[11:15,])
+
+NRC_3.4$coloring
+NRC_3.4$result
+
+NRC_3.11$coloring
+NRC_3.11$result
+
+```
+
+# Interpretation 
+
+In both FTT algorithms, the output is a data table containing all possible c-tuples with a status entry (input, solved, unresolved) and the used fixing taxon. The round number is slightly different: in the "red algorithm", the round indicates the number of times a started the foreach loop, in the "green algorithm" its the combination of the for loop and the tested taxa (all taxa are tested in a certain order).
+
+The output of the findNRC algorithm is a list of the last round. In case of a break its the first NRC coloring found, otherwise its the last RC coloring. The first element is the coloring by taxa, the second element the colored quadruples and the last the result (*fail*: no NRC, *NRC*: NRC found).
+
+The FTT algorithm cannot give false positives! If there are fixing taxa to resolve all quadruples, the set is phylogenetic decisive.
+
+The FTT algorithm can give false negatives! For example, the second example set is phylogenetic decisive, but has not enough quadruples in the set to enable the algorithm to find fixing taxa.
