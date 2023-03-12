@@ -84,15 +84,21 @@ FTT_createInput<-function(fn, sepSym, c=4){
       filt = all_ctuples2 == myTrafoMatrix2[k,NR]
       all_ctuples2[filt] = myTrafoMatrix2[k,taxaID]
     }
+    ctuple = c()
+    for(l in 1:dim(all_ctuples2)[1]){
+      #l=1
+      myRow2 = all_ctuples2[l]
+      ctuple_dummy = paste(myRow2, collapse ="_")
+      ctuple = c(ctuple,ctuple_dummy)
+    }
+    all_ctuples2[,ctuple:=ctuple]
     all_ctuples2
-    ctuple = paste0(all_ctuples2, collapse = "_")
-    all_ctuples2 = c(all_ctuples2,ctuple)
   }
   myData = data.table::rbindlist(myData)
-  data.table::setnames(myData,"V1","ctuple")
+  myData = myData[!duplicated(ctuple),]
 
   # Step 3: force numeric & ordered taxa
-  myData2 = myData
+  myData2 = data.table::copy(myData)
   for(k in dim(myTrafoMatrix)[1]:1){
     # k=4
     filt = myData2 == myTrafoMatrix[k,taxaID]
