@@ -2,8 +2,16 @@ Package: FixingTaxonTraceR
 Title: A tool to check sets of taxon sets for fixing taxon traceability
 Version: 0.0.1
 Authors@R: 
-    person("Janne", "Pott", , "janne.pott@uni-leipzig.de", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0002-5983-5331"))
+    c(person(give = "Mareike", 
+             family = "Fischer", 
+             email = "email@mareikefischer.de", 
+             role = c("aut"),
+             comment = c(ORCID = "0000-0002-9429-0859")),
+      person(give = "Janne", 
+             family = "Pott", 
+             email = "pott.ne.ja@gmail.com", 
+             role = c("aut", "trl", "cre"),
+             comment = c(ORCID = "0000-0002-5983-5331")))
 Description: This tool is used to test a collection of subsets of taxa for fixing taxon traceability. It also tested for certain criteria which have to be met to use this method. 
 License: GPL (>= 3)
 Encoding: UTF-8

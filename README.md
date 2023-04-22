@@ -7,22 +7,18 @@
 <!-- badges: end -->
 
 The goal of FixingTaxonTraceR is to check sets of taxon sets for fixing
-taxon traceability (FTT) in R as introduced in paper X (add link to
-publication/preprint server).
+taxon traceability (FTT) in R as introduced in paper “Perfect taxon
+sampling and fixing taxon traceability: Introducing a class of
+phylogenetically decisive taxon sets” (add link to publication/preprint
+server).
 
-In the setting *c* = 4, FTT indicates phylogenetic decisiveness as
-defined by (add reference).
+In the setting $c=4$, FTT indicates phylogenetic decisiveness as defined
+by Sanderson and Steel.
 
 ## Installation
 
-You can install the released version of FixingTaxonTraceR from
-[CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("FixingTaxonTraceR")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+You can install the laterst version from [GitHub](https://github.com/)
+with:
 
 ``` r
 # install.packages("devtools")
@@ -42,24 +38,29 @@ There are four basic functions implemented in this package:
     checks: First, the bounds of the FTT algorithm are checked. If the
     number of c-tuples is above the upper or below the lower bound, then
     the FTT algorithm does not to have to be used as the result is fix.
-    In case of for *c* = 4, three properties of phylogenetic
-    decisiveness are tested:
+    In case of for $c=4$, three properties of phylogenetic decisiveness
+    are tested:
     1.  Are all triples covered?
     2.  Are triples with simple covered covered by different quadruples?
     3.  Are all tuples sufficiently covered?
 3.  *FTT_algorithmGreen*: This function tests for FTT using the input
-    c-tuples and checking if there are *c* c-tuples so a cross c-tuple
-    can be resolved
+    c-tuples and checking if there are $c$ c-tuples so a cross c-tuple
+    can be resolved.
 4.  *FTT_algorithmRed*: This function tests for FTT using the cross
-    c-tuples and checking if there are *c* c-tuples so it can be
+    c-tuples and checking if there are $c$ c-tuples so it can be
     resolved.
 
-Please note, *FTT_algorithmGreen* and *FTT_algorithmRed* lead to the
-same result, but depending on the input set, the computing time can
-differ, e.g. if there are only a few cross c-tuples, it will be more
-efficient to run *FTT_algorithmRed*.
+**Important Note 1**: In the manuscript, the algorithm refers to “white”
+and “gray” quadruple, while the R-implementation uses “green” and “red”,
+respectively. This is only due to figure coloring costs, and does not
+change the algorithm itself.
 
-To validate the results for *c* = 4 regarding phylogenetic decisiveness,
+**Important Note 2**: Both *FTT_algorithmGreen* and *FTT_algorithmRed*
+lead to the same result, but depending on the input set, the computing
+time can differ, e.g. if there are only a few cross c-tuples, it will be
+more efficient to run *FTT_algorithmRed*.
+
+To validate the results for $c=4$ regarding phylogenetic decisiveness,
 we also implemented the algorithm proposed by (add REF) in the function
 *FTT_findNRC*, which is based on no-rainbow coloring.
 

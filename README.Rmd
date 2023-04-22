@@ -18,19 +18,13 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of FixingTaxonTraceR is to check sets of taxon sets for fixing taxon traceability (FTT) in R as introduced in paper X (add link to publication/preprint server). 
+The goal of FixingTaxonTraceR is to check sets of taxon sets for fixing taxon traceability (FTT) in R as introduced in paper "Perfect taxon sampling and fixing taxon traceability: Introducing a class of phylogenetically decisive taxon sets" (add link to publication/preprint server). 
 
-In the setting $c=4$, FTT indicates phylogenetic decisiveness as defined by (add reference).
+In the setting $c=4$, FTT indicates phylogenetic decisiveness as defined by Sanderson and Steel.
 
 ## Installation
 
-You can install the released version of FixingTaxonTraceR from [CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("FixingTaxonTraceR")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+You can install the laterst version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -46,10 +40,12 @@ There are four basic functions implemented in this package:
     1) Are all triples covered? 
     2) Are triples with simple covered covered by different quadruples? 
     3) Are all tuples sufficiently covered?
-3)  _FTT_algorithmGreen_: This function tests for FTT using the input c-tuples and checking if there are $c$ c-tuples so a cross c-tuple can be resolved
+3)  _FTT_algorithmGreen_: This function tests for FTT using the input c-tuples and checking if there are $c$ c-tuples so a cross c-tuple can be resolved. 
 4)  _FTT_algorithmRed_: This function tests for FTT using the cross c-tuples and checking if there are $c$ c-tuples so it can be resolved. 
 
-Please note, _FTT_algorithmGreen_ and _FTT_algorithmRed_ lead to the same result, but depending on the input set, the computing time can differ, e.g. if there are only a few cross c-tuples, it will be more efficient to run _FTT_algorithmRed_.
+**Important Note 1**: In the manuscript, the algorithm refers to "white" and "gray" quadruple, while the R-implementation uses "green" and "red", respectively. This is only due to figure coloring costs, and does not change the algorithm itself. 
+
+**Important Note 2**: Both _FTT_algorithmGreen_ and _FTT_algorithmRed_ lead to the same result, but depending on the input set, the computing time can differ, e.g. if there are only a few cross c-tuples, it will be more efficient to run _FTT_algorithmRed_.
 
 To validate the results for $c=4$ regarding phylogenetic decisiveness, we also implemented the algorithm proposed by (add REF) in the function _FTT_findNRC_, which is based on no-rainbow coloring. 
     
