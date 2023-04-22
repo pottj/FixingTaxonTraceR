@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of FixingTaxonTraceR is to check sets of taxon sets for fixing taxon traceability (FTT) in R as introduced in paper "Perfect taxon sampling and fixing taxon traceability: Introducing a class of phylogenetically decisive taxon sets" (add link to publication/preprint server). 
+The goal of FixingTaxonTraceR is to check sets of taxon sets for fixing taxon traceability (FTT) in R as introduced in Algorithm 1 in paper "Perfect taxon sampling and fixing taxon traceability: Introducing a class of phylogenetically decisive taxon sets" (add link to publication/preprint server). 
 
 In the setting $c=4$, FTT indicates phylogenetic decisiveness as defined by Sanderson and Steel.
 
@@ -47,7 +47,7 @@ There are four basic functions implemented in this package:
 
 **Important Note 2**: Both _FTT_algorithmGreen_ and _FTT_algorithmRed_ lead to the same result, but depending on the input set, the computing time can differ, e.g. if there are only a few cross c-tuples, it will be more efficient to run _FTT_algorithmRed_.
 
-To validate the results for $c=4$ regarding phylogenetic decisiveness, we also implemented the algorithm proposed by (add REF) in the function _FTT_findNRC_, which is based on no-rainbow coloring. 
+To validate the results for $c=4$ regarding phylogenetic decisiveness, we also implemented the algorithm proposed by [Parvini, Braught, and Fernández-Baca](https://dl.acm.org/doi/10.1007/978-3-030-57821-3_17) in the function _FTT_findNRC_, which is based on no-rainbow coloring. 
     
 ## Example
 
