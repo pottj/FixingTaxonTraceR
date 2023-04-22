@@ -1,5 +1,5 @@
 Package: FixingTaxonTraceR
-Title: A tool to check sets of taxon sets for fixing taxon traceability
+Title: Fixing taxon trace algorithm implemented in R
 Version: 0.0.1
 Authors@R: 
     c(person(give = "Mareike", 
@@ -12,7 +12,8 @@ Authors@R:
              email = "pott.ne.ja@gmail.com", 
              role = c("aut", "trl", "cre"),
              comment = c(ORCID = "0000-0002-5983-5331")))
-Description: This tool is used to test a collection of subsets of taxa for fixing taxon traceability. It also tested for certain criteria which have to be met to use this method. 
+Description: Implements algorithm for fixing taxon traceability as described in Fischer and Pott (2023) (DOI preprint server) and an R-adaption of the "findNRC" algorithm of Parvini et al (2020) <DOI:10.1007/978-3-030-57821-3_17>. Fixing taxon traceable sets are guaranteed to be phylogenetically decisive, e.g. result in one unique supertree, as long as the input trees are compatible. Traceability can be recognized in polynomial time. 
+Date: 2023-04-22
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
