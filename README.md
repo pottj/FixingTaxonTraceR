@@ -62,7 +62,7 @@ more efficient to run *FTT_algorithmRed*.
 
 To validate the results for $c=4$ regarding phylogenetic decisiveness,
 we also implemented the algorithm proposed by [Parvini, Braught, and
-Fernández-Baca](https://dl.acm.org/doi/10.1007/978-3-030-57821-3_17) in
+Fernández-Baca](https://ieeexplore.ieee.org/document/9616390) in
 the function *FTT_findNRC*, which is based on no-rainbow coloring.
 
 ## Example
