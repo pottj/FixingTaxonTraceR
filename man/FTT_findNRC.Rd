@@ -27,7 +27,7 @@ This function searches for a no-rainbow 4-coloring of the input quadruples. If t
 \strong{IMPORTANT NOTE}: This function is only meaningful for c=4.
 }
 \details{
-This algorithm was adapted from Algorithm 2 (No-Rainbow 4-Coloring of H) of Ghazaleh Parvini, Katherine Braught, and David Fernandez-Baca (DOI: 10.1109/TCBB.2021.3128381)
+This algorithm was adapted from Algorithm 2 (No-Rainbow 4-Coloring of H) of \href{https://ieeexplore.ieee.org/document/9616390}{Ghazaleh Parvini, Katherine Braught, and David Fernandez-Baca} (DOI: 10.1109/TCBB.2021.3128381)
 }
 \examples{
 \dontrun{

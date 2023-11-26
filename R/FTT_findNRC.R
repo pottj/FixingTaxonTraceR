@@ -9,7 +9,7 @@
 #' - the coloring per taxa
 #' - the colored quadruples
 #' - the result: _fail_ indicates decisiveness (no coloring was a no-rainbow 4-coloring), while _NRC_ indicates the first no-rainbow 4-coloring and the reason to call the set not-decisive
-#' @details This algorithm was adapted from the python version from Ghazaleh Parvini
+#' @details This algorithm was adapted from Algorithm 2 (No-Rainbow 4-Coloring of H) of [Ghazaleh Parvini, Katherine Braught, and David Fernandez-Baca](https://ieeexplore.ieee.org/document/9616390) (DOI: 10.1109/TCBB.2021.3128381)
 #' @examples
 #' \dontrun{
 #' if(interactive()){
